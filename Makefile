@@ -13,6 +13,8 @@ SYSDEPS_INSTALLED = .sysdeps-installed
 DEVENV = venv
 DEVENVPIP = $(DEVENV)/bin/pip
 
+PBDIR = macaroonbakery/bakery/_internal
+
 .DEFAULT_GOAL := setup
 
 $(DEVENVPIP):
@@ -62,6 +64,7 @@ help:
 	@echo 'make test - Run tests.'
 	@echo 'make lint - Run linter and pep8.'
 	@echo 'make check - Run all the tests and lint in all supported scenarios.'
+	@echo 'make protobuf - Compile the protobuf files into python modules.'
 	@echo 'make source - Create source package.'
 	@echo 'make wheel - Create wheel package.'
 	@echo 'make clean - Get rid of bytecode files, build and dist dirs, venvs.'
@@ -73,6 +76,11 @@ help:
 	@echo '- use tox as usual on this project;'
 	@echo '  see https://tox.readthedocs.org/en/latest/'
 
+$(PBDIR)/%_pb2.py: $(PBDIR)/%.proto
+	protoc --python_out=$(PBDIR) --proto_path=$(PBDIR) $(notdir $^)
+
+.PHONY: protobuf
+protobuf: $(PBDIR)/id_pb2.py
 
 .PHONY: lint
 lint: setup
