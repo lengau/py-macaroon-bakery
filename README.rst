@@ -23,11 +23,12 @@ Interacting with a protected url, you can use the BakeryAuth provided to deal
 with the macaroon bakery
 
     >>> from macaroonbakery import httpbakery
+    >>> import requests
     >>> jar = requests.cookies.RequestsCookieJar()
-    >>> resp = requests.get('some protected url',
-                            cookies=jar,
-                            auth=httpbakery.BakeryAuth(cookies=jar))
-    >>> resp.raise_for_status()
+    >>> client = httpbakery.Client(cookies=jar)
+    >>> client.request(
+    ...     "GET", "https://api.staging.charmhub.io/v1/tokens/whoami"
+    ... ).json()
 
 
 You can use any cookie storage you'd like so next subsequent calls the macaroon
