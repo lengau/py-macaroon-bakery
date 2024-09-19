@@ -16,15 +16,17 @@ $(DEVENVPIP):
 $(SYSDEPS_INSTALLED): sysdeps.mk
 ifeq ($(shell command -v apt-get > /dev/null; echo $$?),0)
 	sudo apt-get install --yes $(APT_SYSDEPS)
+else ifeq ($(shell command -v brew > /dev/null; echo $$?),0)
+	brew install $(BREW_SYSDEPS)
 else
 	@echo 'System dependencies can only be installed automatically on'
-	@echo 'systems with "apt-get". On OSX you can manually use Homebrew'
-	@echo 'if there are missing dependencies corresponding to the following'
-	@echo 'Debian packages:'
+	@echo 'systems with "apt-get" or "brew". Dependencies correspond to'
+	@echo 'the following Debian packages:'
 	@echo '$(APT_SYSDEPS).'
 endif
+	@command -v tox > /dev/null || (echo "Could not find tox on the PATH"; exit 1)
+	@command -v isort > /dev/null || (echo "Could not find isort on the PATH"; exit 1)
 	touch $(SYSDEPS_INSTALLED)
-
 
 .PHONY: check
 check: setup lint
