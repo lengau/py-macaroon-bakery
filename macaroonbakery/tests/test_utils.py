@@ -3,8 +3,10 @@
 # Copyright 2017 Canonical Ltd.
 # Licensed under the LGPLv3, see LICENCE file for details.
 
+from http import cookiejar
 import json
 from datetime import datetime
+import tempfile
 from unittest import TestCase
 
 import macaroonbakery.bakery as bakery
@@ -47,6 +49,18 @@ class CookieTest(TestCase):
     def test_cookie_with_hostname_not_ascii(self):
         c = cookie('http://κουλουράκι', 'test', 'value')
         self.assertEqual(c.domain, 'κουλουράκι.local')
+
+
+    def test_mozilla_cookie_jar(self):
+        # https://github.com/go-macaroon-bakery/py-macaroon-bakery/issues/88
+        with tempfile.TemporaryDirectory() as cookie_dir:
+            c = cookie('http://κουλουράκι', 'test', 'value')
+            jar = cookiejar.MozillaCookieJar(cookie_dir + "/cookie_jar")
+
+            jar.set_cookie(c)
+
+            jar.save()
+
 
 
 class TestB64Decode(TestCase):

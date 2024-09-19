@@ -160,7 +160,7 @@ def cookie(
         discard=False,
         comment=None,
         comment_url=None,
-        rest=None,
+        rest={},
         rfc2109=False,
     )
 

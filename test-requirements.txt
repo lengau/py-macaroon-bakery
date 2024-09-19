@@ -1,16 +1,17 @@
-# Copyright 2017 Canonical Ltd.
+# Copyright 2017,2024 Canonical Ltd.
 # Licensed under the LGPLv3, see LICENCE file for details.
 
 coverage==7.3.2
 extras==1.0.0
 fixtures==3.0.0
 flake8==2.4.0
-httmock==1.2.5
+httmock==1.4.0
 linecache2==1.0.0
-mock==1.0.1
+mock==5.1.0
 nose2==0.13.0
 pbr==3.1.1
 python-mimeparse==1.6.0
+setuptools==75.1.0
 testtools==2.3.0; python_version<"3"
 testtools==2.5.0; python_version>="3"
 traceback2==1.4.0
